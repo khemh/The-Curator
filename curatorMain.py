@@ -30,22 +30,20 @@ async def imageonly(message):
 			await channel.send("Image only disabled")
 			tempchannellist=get_channel_list()
 			tempchannellist.remove(str(channel.id))
-			channelfile=open("channellist.txt", "w")
+			channelfile=open(os.path.join(folder,'channellist.txt'), "w")
 			if(len(tempchannellist)==0):
 				pass
 			else:
 				channelfile.writelines(["%s\n" % item  for item in tempchannellist])
 			channelfile.close()
 			imageonlylist=tempchannellist
-			print(imageonlylist)
 		else:
 			def checkauthor(m2):
 				return message.author ==m2.author
 			await channel.send("Image only enabled")
 			channelid = channel.id
 			imageonlylist.append(str(channel.id))
-			print(imageonlylist)
-			channelfile = open("channellist.txt","a")
+			channelfile = open(os.path.join(folder,'channellist.txt'),"a")
 			channelfile.writelines(["%s\n" % channelid])
 			channelfile.close()
 			await message.message.delete()
@@ -57,13 +55,10 @@ async def imageonly(message):
 		await channel.send("Image only enabled")
 		channelid = channel.id
 		imageonlylist.append(str(channel.id))
-		channelfile = open("channellist.txt","w")
+		channelfile = open(os.path.join(folder,'channellist.txt'),"a")
 		channelfile.writelines(["%s\n" % item  for item in imageonlylist])
 		channelfile.close()
 		await message.message.delete()
-		
-		#channelfile = open("channellist.txt","w+")
-		#await client.get_channel(imageonlychannels[0]).send("testing saving")
 		
 @client.event
 async def on_message(message):
@@ -103,6 +98,6 @@ try:
 	client.loop.create_task(list_servers())
 	client.run(TOKEN)
 except:
-	channelfile = open("channellist.txt","w")
+	channelfile = open(os.path.join(folder,'channellist.txt'),"w")
 	channelfile.writelines(["%s\n" % item  for item in imageonlylist])
 	channelfile.close()
